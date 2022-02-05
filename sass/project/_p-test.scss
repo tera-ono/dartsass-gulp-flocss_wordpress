@@ -1,0 +1,6 @@
+@use "global" as *;
+.p-test {
+  font-size: rem(100);
+  color: $accent;
+  font-weight: $bold;
+}
