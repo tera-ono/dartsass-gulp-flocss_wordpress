@@ -1,3 +1,3 @@
 <?php get_header(); ?>
-  トップページ
+<h1 class="p-test">こんにちは</h1>
 <?php get_footer(); ?>
