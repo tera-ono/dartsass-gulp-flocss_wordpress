@@ -4,7 +4,7 @@ const { src, dest, watch, series, parallel } = require("gulp");
 const rename = require("gulp-rename");
 
 
-const themeName = "WordPressTheme"; // WordPress theme name
+const themeName = "WordPressTheme"; // WordPress theme name(開発テーマ名に都度変更:テーマフォルダ名)
 
 // 読み込み先（階層が間違えていると動かないので注意）
 const srcPath = {
