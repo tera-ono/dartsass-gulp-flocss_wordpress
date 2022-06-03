@@ -30,7 +30,7 @@ MV以下になると表れ以下追従
   // 最初はボタンを消しておく
   scroll_top.hide();
 
-  // ボタンの表示設定
+  // スクロールトップボタンの表示設定
   $(window).scroll(function () {
     if ($(this).scrollTop() > target) {
       // MVの高さ以上のスクロールでボタンを表示

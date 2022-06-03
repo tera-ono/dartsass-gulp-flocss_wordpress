@@ -5,7 +5,7 @@
 	
 <h1>おれれれれれ</h1>
 		<!-- グローバルメニュー -->
-		<nav class="p-header__nav c-header-nav u-show-pc">
+		<nav class="p-header__nav c-header-nav u-show-tab">
 			<?php
 			wp_nav_menu(
 				array(
@@ -25,7 +25,6 @@
       <span class="c-mobile-menu__bar"></span>
       <span class="c-mobile-menu__bar"></span>
       <span class="c-mobile-menu__bar"></span>
-      
     </div>
 	</div>
 	<!--.p-header__inner-->

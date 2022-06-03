@@ -36,7 +36,8 @@ function my_script_init()
 {
 
 	wp_enqueue_style( 'my', get_template_directory_uri() . '/assets/css/styles.css', array(), '1.0.1', 'all' );
-
+	/* --- swiper用 --- */
+	wp_enqueue_script( 'mv-swiper', get_template_directory_uri() . '/assets/js/mv_slider.js',array(), '1.0.0', true );
 	wp_enqueue_script( 'my', get_template_directory_uri() . '/assets/js/script.js', array( 'jquery' ), '1.0.1', true );
 
 }
