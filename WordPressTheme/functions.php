@@ -44,6 +44,47 @@ function my_script_init()
 add_action('wp_enqueue_scripts', 'my_script_init');
 
 
+/**
+ * カテゴリー名とターム名を1つだけ表示（aタグリンクも出しわけ）[引数デフォルト: カテゴリー]
+ *
+ * @param boolean $anchor aタグで出力するかどうか.
+ * @param string  $taxonomy タクソノミー:初期値はデフォルトの投稿で使うcategory。 カスタム投稿の場合はそのタクソノミーを指定
+ * @param integer $id 投稿id.
+ * @return void
+ */
+function my_the_post_terms($anchor = false, $taxonomy = 'category', $id = 0)
+{
+  global $post;
+  //引数が渡されなければ投稿IDを見るように設定
+  if (0 === $id) {
+    $id = $post->ID;
+  }
+
+  //ターム(カテゴリー)一覧を取得
+  /* --- もし、taxonomy.php or category.phpだったら現在表示中のターム(カテゴリ)情報を取得 --- */
+  if(is_tax() || is_category()) {
+    $this_terms = get_queried_object();
+    if ($this_terms) {
+      if ($anchor) { //引数がtrueなら個別投稿記事リンク付きで出力
+  
+        echo '<a href="' . get_the_permalink() . '">' . esc_html($this_terms->name) . '</a>';
+      } else { //引数がfalseならカテゴリー名のみ出力
+        echo esc_html($this_terms->name);
+      }
+    }
+  } else { /* --- それ以外、つまりその他のアーカイブページ:
+						home.php(デフォルト投稿一覧), archive-〇〇.php(カスタム投稿一覧)のターム(カテゴリ)情報を取得 --- */
+    $this_terms = get_the_terms($id, $taxonomy);
+    if ($this_terms[0]) {
+      if ($anchor) { //引数がtrueならアーカイブへのリンク付きで出力
+  
+        echo '<a href="' . esc_url(get_term_link($this_terms[0]->term_id)) . '">' . esc_html($this_terms[0]->name) . '</a>';
+      } else { //引数がfalseならカテゴリー名のみ出力
+        echo esc_html($this_terms[0]->name);
+      }
+    } 
+  }
+}
 
 
 /**
