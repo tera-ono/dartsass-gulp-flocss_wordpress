@@ -42,6 +42,7 @@ const plumber = require("gulp-plumber");// エラーが発生しても強制終�
 const notify = require("gulp-notify");//エラー発生時のアラート出力
 const postcss = require("gulp-postcss");//postcss-cssnext,css-mqpackerを使うために必要
 const cssnext = require("postcss-cssnext")//最新のCSS構文を今すぐ使えるようにする
+const mediaquery = require("gulp-merge-media-queries");
 const cleanCSS = require("gulp-clean-css");//CSSを圧縮する
 const sourcemaps = require("gulp-sourcemaps");//ソースマップを生成する
 
@@ -72,11 +73,12 @@ const cssSass = () => {
             outputStyle: 'expanded'//一般的なCSSのフォーマットで出力される (compressedなら圧縮されて出力)
         }))
         .pipe(postcss([cssnext(browsers)])) //指定したブラウザに対応した次世代のCSSを、モダンな環境にも対応できるように書き換える
+        .pipe(mediaquery()) //cssをメディアクエリ(ブレイクポイント毎に)を1にまとめる
         // .pipe(sourcemaps.write('./map'))//cssファイルから見たパス(同階層)
         .pipe(dest(destPath.css))
-        .pipe(cleanCSS())
-		.pipe(rename({ extname: '.min.css' }))//圧縮したcssをリネーム
-        .pipe(sourcemaps.write('./map'))//cssファイルから見たパス(同階層)
+        // .pipe(cleanCSS()) //cssを圧縮
+		// .pipe(rename({ extname: '.min.css' }))//圧縮したcssをリネーム
+        .pipe(sourcemaps.write('./'))//cssファイルから見たパス(同階層)
         .pipe(dest(destPath.css)) //pipeされたものを、ファイルに書き出します
         .pipe(browserSync.stream())//ブラウザがリロードしていないのに変更内容が反映させる
         .pipe(notify({
