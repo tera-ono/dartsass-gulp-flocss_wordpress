@@ -28,18 +28,18 @@ add_action( 'after_setup_theme', 'my_setup' );
 
 
 /**
- * CSSとJavaScriptの読み込み
+ * CSSとJavaScriptの読み込み(get_theme_file_pathで自動キャッシュクリア)
  *
  * @codex https://wpdocs.osdn.jp/%E3%83%8A%E3%83%93%E3%82%B2%E3%83%BC%E3%82%B7%E3%83%A7%E3%83%B3%E3%83%A1%E3%83%8B%E3%83%A5%E3%83%BC
  */
 function my_script_init()
 {
-
-	wp_enqueue_style( 'my', get_template_directory_uri() . '/assets/css/styles.css', array(), '1.0.1', 'all' );
+	wp_enqueue_style('my', get_theme_file_uri('/assets/css/style.css'), array(), filemtime(get_theme_file_path('/assets/css/style.css')), 'all');
+	
 	/* --- swiper用 --- */
-	wp_enqueue_script( 'mv-swiper', get_template_directory_uri() . '/assets/js/mv_slider.js',array(), '1.0.0', true );
-	wp_enqueue_script( 'my', get_template_directory_uri() . '/assets/js/script.js', array( 'jquery' ), '1.0.1', true );
-
+	wp_enqueue_script('mv-swiper', get_theme_file_uri('/assets/js/mv_slider.js'), array(), get_theme_file_path('/assets/js/mv_slider.js'), true );
+	/* --- オリジナルjs --- */
+	wp_enqueue_script('my', get_theme_file_uri('/assets/js/script.js'), array(), get_theme_file_path('/assets/js/script.js'), true );
 }
 add_action('wp_enqueue_scripts', 'my_script_init');
 
@@ -191,3 +191,26 @@ function my_excerpt_more( $more ) {
 
 }
 add_filter( 'excerpt_more', 'my_excerpt_more' );
+
+
+
+/**
+ * それぞれのテンプレートファイルのメインループを制御して、1度に出力する数などを変更(残りの投稿は次のページに〜)
+ */
+// function my_preget_posts($query)
+// {
+// 	//管理画面を表示しているとき、もしくは現在のクエリがメインクエリでなければ動作をキャンセルする
+// 	//トップページを固定ページで設定しているので、front-page.phpでは使えない
+// 	if (is_admin() || !$query->is_main_query()) {
+// 		return;
+// 	}
+// 	/* --- カスタム投稿タイプ 制作実績 もしくは、タクソノミー制作ジャンルで６件表示 --- */
+// 	if ($query->is_post_type_archive('works') || ($query->is_tax('work_genre'))) {
+// 		$query->set('posts_per_page', 6);
+// 	}
+//  /* --- カスタム投稿タイプ ブログ もしくは、タクソノミー: ブログカテゴリーで9件表示 --- */
+// 	if ($query->is_post_type_archive('blog') || ($query->is_tax('blog_category'))) {
+// 		$query->set('posts_per_page', 9);
+// 	}
+// }
+// add_action('pre_get_posts', 'my_preget_posts');
